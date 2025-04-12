@@ -61,8 +61,8 @@ def getTabla(heads_data,character="-"):
     return table
     
 
-data={"k":[1,2,3,4,5],"texto 1":[0.123,0.99,0.1,5,4.99923], "texto 2C":[2,0.78,231,3322,3], "txt39999999":[4,2,1,0.1,88],"txt":[2,3,4,1,5]}
-example=getTabla(data)
-print(example)
+#data={"k":[1,2,3,4,5],"texto 1":[0.123,0.99,0.1,5,4.99923], "texto 2C":[2,0.78,231,3322,3], "txt39999999":[4,2,1,0.1,88],"txt":[2,3,4,1,5]}
+#example=getTabla(data)
+#print(example)
 
 
