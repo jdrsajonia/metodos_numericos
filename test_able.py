@@ -19,3 +19,4 @@ resultado = generar_diccionario(num_claves=8, longitud_listas=9)
 
 print(resultado)
 table.tabla(resultado)
+#NOTA: este script fue creado con ChatGPT
