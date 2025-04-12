@@ -14,6 +14,9 @@ def getTabla(heads_data,character="-"):
             long_tabla_y: obtiene el tamaño total en -y- de la tabla
             long_tabla_x: obtiene el tamaño total en -x- de la tabla
             enmarcate: obtiene la enmarcacion de la tabla con caracteres = con su longitud proporcional 
+        
+        Nota: al usar esta funcion, hay que asegurarse que las listas de cada llave, tengan la misma longitud para garantizar
+        la integridad del codigo y de la informacion. De lo contario, el codigo arrojará un Index Out Of Bounds
 
     '''
     table=""
@@ -58,8 +61,8 @@ def getTabla(heads_data,character="-"):
     return table
     
 
-#data={"k":[1,2,3,4,5],"texto 1":[0.123,0.99,0.1,5,4.99923], "texto 2C":[2,0.78,231,3322,3], "txt39999999":[4,2,1,0.1,88],"txt":[2,3,4,1,5]}
-#example=getTabla(data)
-#print(example)
+data={"k":[1,2,3,4,5],"texto 1":[0.123,0.99,0.1,5,4.99923], "texto 2C":[2,0.78,231,3322,3], "txt39999999":[4,2,1,0.1,88],"txt":[2,3,4,1,5]}
+example=getTabla(data)
+print(example)
 
 
