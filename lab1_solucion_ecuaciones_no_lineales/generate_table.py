@@ -1,4 +1,4 @@
-def getTabla(heads_data,character="-"):
+def getTabla(heads_data,setTitle="",character=" "):
     '''
         Esta funcion genera una tabla para almacenar y mostrar los datos recolectados
         en los laboratorios que necesiten implementar este formato para la materia de Métodos Numéricos.
@@ -37,8 +37,9 @@ def getTabla(heads_data,character="-"):
     long_tabla_y=len(heads_data[first_head])
     long_tabla_x=sum(long_elements_x.values())
     enmarcate=long_tabla_x+2*len(heads_data)+len(heads_data)+1
+    title=setTitle.center(enmarcate)
     
-    table +="\n"+"="*enmarcate+"\n"+"|"
+    table +="\n"+title+"\n"+"="*enmarcate+"\n"+"|"
 
     for head in heads_data:
         # Este for carga los encabezados de la tabla
