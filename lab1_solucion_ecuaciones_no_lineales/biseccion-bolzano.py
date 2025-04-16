@@ -6,7 +6,7 @@ def bolzano(function,a,b, tolerance=0.0001):
     f = lambda x:eval(function)
     k=0
 
-    while True:
+    while k<200:
         c=(a+b)/2 #punto medio
         f_a = f(a)
         f_b = f(b)
@@ -34,7 +34,6 @@ def bolzano(function,a,b, tolerance=0.0001):
 
 
 def insert_function():
-
     while True:
         try:
             enter_funcion=input("\nIngresa una funcion en terminos de x, correctamente escrita en sintaxis de Python (usar 'math' si es necesario)\n---> f(x) = ")
@@ -47,7 +46,6 @@ def insert_function():
 
 
 def insert_interval(f):
-    
     while True:
         enter_interval=input("\nIngresa un intervalo a, b donde f(a) y f(b) tienen signos opuestos siguiendo el formato 'a b'\n---> a b : ")
 
@@ -64,7 +62,7 @@ def insert_interval(f):
             return a,b
 
 
-
+# Logica del programa:
 str_funcion, function=insert_function()
 a, b = insert_interval(function)
 
@@ -73,3 +71,4 @@ titulo="Biseccion de Bolzano para f(x) = {}".format(str_funcion)
 
 print(table.getTabla(resultados,setTitle=titulo))
 
+#añadir documentacion y cronometracion del codigo
