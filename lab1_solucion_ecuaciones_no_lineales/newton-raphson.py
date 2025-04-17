@@ -1,9 +1,21 @@
-import sympy as sp #instalar con pip install
-from math import *
 import generate_table as table
+import sympy as sp #instalar con pip install
+import time
 
-def newtonRapshon(str_function, variable, point_k0, tolerance=0.0001):
-    results={"k":[],"P_k":[],"(P_k+1)-(P_k)":[],"f(P_k)":[]}
+
+
+def process_function(str_function, str_variable): #validar funcion en esta misma
+    x=sp.Symbol(str_variable)
+    f_simbolic=sp.sympify(str_function)
+    f_processed = sp.lambdify(x, f_simbolic, modules=["math"])
+    return f_processed
+
+
+def newtonRapshon(str_function, variable, point_k0, tolerance=0.0001, decimal_notation=False):
+    results={"k":[],"P_k *root*":[],"(P_k+1)-(P_k)":[],"f(P_k)":[]}
+
+    def fmt(value):
+        return f"{value:.8f}" if decimal_notation else value
     
     x = sp.Symbol(variable)
     # funciones simbolicas
@@ -20,16 +32,19 @@ def newtonRapshon(str_function, variable, point_k0, tolerance=0.0001):
         f_diff_pk=f_diff(point_k0) # f´(pk)
 
         if f_diff_pk==0:
+            results["k"].append(k)
+            results["P_k *root*"].append(fmt(point_k0))
+            results["(P_k+1)-(P_k)"].append("None")
+            results["f(P_k)"].append(fmt(f_pk))
             break
 
         point_k1=point_k0-(f_pk/f_diff_pk)
         difference=abs(point_k1-point_k0)
 
         results["k"].append(k)
-        results["P_k"].append(point_k0)
-        results["(P_k+1)-(P_k)"].append(difference)
-        results["f(P_k)"].append(f_pk)
-        #print(f"{k} {point_k0:.6f} {point_k1 - point_k0:.6f} {f_pk:.6f} {f_diff_pk:.6f}")
+        results["P_k *root*"].append(fmt(point_k0))
+        results["(P_k+1)-(P_k)"].append(fmt(difference))
+        results["f(P_k)"].append(fmt(f_pk))
         point_k0=point_k1
         
         if difference<tolerance:
@@ -37,23 +52,50 @@ def newtonRapshon(str_function, variable, point_k0, tolerance=0.0001):
         k=k+1
     return results
     
-def insert_function():
-    while True:
-        try:
-            enter_funcion=input("\nIngresa una funcion en terminos de x, correctamente escrita en sintaxis de Python (usar 'math' si es necesario)\n---> f(x) = ")
-            f = lambda x: eval(enter_funcion)
-            resultado = f(1)
-            return enter_funcion, f   
-        except Exception as e:
-            print(f"Función inválida: {e}")
-            print("Por favor, intenta nuevamente.\n")
 
-            
-resultados=newtonRapshon("1980*(1-E**(-x/10))-98*x","x",16)
-print(table.getTabla(resultados))
-resultados = newtonRapshon("log(x) - 1", "x", 7)
-print(table.getTabla(resultados))
-resultados = newtonRapshon("E**x", "x", -8)
-print(table.getTabla(resultados))
+def validate_function(str_func, str_var):  
+    try:
+        f=process_function(str_func,str_var)
+        test=isinstance(f(1),(int,float))
+        return (str_var in str_func and str_var.isalpha() and test)
+    except (TypeError, ValueError):
+        return False
+    
+    
+
+def validate_nR_point0(enter_point):
+    try:
+        return isinstance(float(enter_point),(int,float))
+    except ValueError:
+        return False
+    
+
+def newtonRaphson_main():
+    var=input("var: ")
+    func=input("func: ")
+    while not validate_function(func,var):
+        print("Error: la funcion esta mal escrita o no esta en terminos de la variable ingresada")
+        var=input("var again: ")
+        func=input("func again: ")
+
+    point=input("point: ")
+    while not validate_nR_point0(point):
+        point=input("point again: ")
+
+    point=float(point)
+
+    init=time.time()
+    result=newtonRapshon(func,var,point,decimal_notation=False)
+    end=time.time()
+
+    duration=end-init
+
+    titulo="Newton-Raphson para f({}) = {}".format(var,func)
+    tabla=table.getTabla(result,setTitle=titulo)
+    print(tabla)
+    print(f"Tiempo de ejecicion:{duration:.8f}")
+
+    
+newtonRaphson_main()
 
 

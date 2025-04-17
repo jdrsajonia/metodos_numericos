@@ -1,9 +1,22 @@
 import generate_table as table
-from math import *
+import sympy as sp #instalar con pip install
+import time
 
-def bolzano(function,a,b, tolerance=0.0001):  
-    results={"k":[],"a_k":[],"c_k":[],"b_k":[],"f(c_k)":[],}
-    f = lambda x:eval(function)
+
+def process_function(str_function, str_variable):
+    x=sp.Symbol(str_variable)
+    f_simbolic=sp.sympify(str_function)
+    f_processed = sp.lambdify(x, f_simbolic, modules=["math"])
+    return f_processed
+
+
+def bolzano(str_function,str_variable,a,b,tolerance=0.0001,decimal_notation=False):  
+    results={"k":[],"a_k *root*":[],"c_k":[],"b_k":[],"f(c_k)":[],}
+    #funcion interna para formatear en decimal a los datos
+    def fmt(value): 
+        return f"{value:.8f}" if decimal_notation else value
+
+    f = process_function(str_function,str_variable)
     k=0
 
     while k<200:
@@ -13,10 +26,10 @@ def bolzano(function,a,b, tolerance=0.0001):
         f_c = f(c) 
 
         results["k"].append(k)
-        results["a_k"].append(a)
-        results["c_k"].append(c)
-        results["b_k"].append(b)
-        results["f(c_k)"].append(f_c)
+        results["a_k *root*"].append(fmt(a))
+        results["c_k"].append(fmt(c))
+        results["b_k"].append(fmt(b))
+        results["f(c_k)"].append(fmt(f_c))
 
         f_a_c = (f_a>0 and f_c<0) or (f_a<0 and f_c>0) # f(a) y f(c) tienen signos opuestos. Si es cierto, (a,c) --> (a,b)
         f_c_b = (f_b>0 and f_c<0) or (f_b<0 and f_c>0) # f(b) y f(c) tienen signos opuestos. Si es cierto, (a,c) --> (a,b)
@@ -32,43 +45,64 @@ def bolzano(function,a,b, tolerance=0.0001):
     return results
 
 
-
-def insert_function():
-    while True:
-        try:
-            enter_funcion=input("\nIngresa una funcion en terminos de x, correctamente escrita en sintaxis de Python (usar 'math' si es necesario)\n---> f(x) = ")
-            f = lambda x: eval(enter_funcion)
-            resultado = f(1)
-            return enter_funcion, f   
-        except Exception as e:
-            print(f"Función inválida: {e}")
-            print("Por favor, intenta nuevamente.\n")
+def validate_function(str_func, str_var):  
+    try:
+        f=process_function(str_func,str_var)
+        test=isinstance(f(1),(int,float))
+        return (str_var in str_func and str_var.isalpha() and test)
+    except (TypeError, ValueError):
+        return False
 
 
-def insert_interval(f):
-    while True:
-        enter_interval=input("\nIngresa un intervalo a, b donde f(a) y f(b) tienen signos opuestos siguiendo el formato 'a b'\n---> a b : ")
+def validate_bolzano_interval(str_func,str_var,str_interval):
 
-        interval=list(map(float,enter_interval.split()))
-        a=interval[0]
-        b=interval[1]
+        f=process_function(str_func,str_var)
+        interval=str_interval.split()
+        a=float(interval[0])
+        b=float(interval[1])
 
         f_a=f(a)
         f_b=f(b)
 
         if f_a*f_b>0:
             print("\nError: f(a) y f(b) no tienen signos opuestos. \nf(a) = f({}) = {}\nf(b) = f({}) = {}\nVuelva a intentarlo\n".format(a,f_a,b,f_b))
+            return False
         else:
-            return a,b
+            return True
+   
 
 
-# Logica del programa:
-str_funcion, function=insert_function()
-a, b = insert_interval(function)
+# flujo del programa:
+def bolzano_main():
+    var=input("var: ")
+    func=input("func: ")
 
-resultados=bolzano(str_funcion,a,b)
-titulo="Biseccion de Bolzano para f(x) = {}".format(str_funcion)
+    while not validate_function(func,var):
+        var=input("var again: ")
+        func=input("func again: ")
 
-print(table.getTabla(resultados,setTitle=titulo))
+    interval=input("interval: ")
+    while not validate_bolzano_interval(func,var,interval):
+        interval=input("interval again: ")
+
+    interval=interval.split()
+    a=float(interval[0])
+    b=float(interval[1])
+
+
+    init=time.time()
+    result=bolzano(func,var,a,b)
+    end=time.time()
+
+    duracion=end-init
+
+    titulo="Biseccion de Bolzano para f(x) = {}".format(func)
+    tabla=table.getTabla(result,setTitle=titulo)
+    print(tabla)
+    print(f"Tiempo de ejecucion: {duracion:.8f}")
+
+bolzano_main()
+
+
 
 #añadir documentacion y cronometracion del codigo

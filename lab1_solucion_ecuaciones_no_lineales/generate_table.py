@@ -1,4 +1,4 @@
-def getTabla(heads_data,setTitle="",character=" "):
+def getTabla(heads_data,setTitle="",character=" ", decimal_notation=False):
     '''
         Esta funcion genera una tabla para almacenar y mostrar los datos recolectados
         en los laboratorios que necesiten implementar este formato para la materia de Métodos Numéricos.
@@ -21,8 +21,14 @@ def getTabla(heads_data,setTitle="",character=" "):
     '''
     table=""
     long_elements_x=dict()
+    first_head=next(iter(heads_data))
+    long_tabla_y=len(heads_data[first_head])
 
-    if len(character)>1:
+
+    if (long_tabla_y==0):
+        return "Tabla sin datos"
+
+    if len(character)>1: #si character son varios digitos, agarra el primero
         character=character[:1]
 
     for head in heads_data: 
@@ -32,9 +38,9 @@ def getTabla(heads_data,setTitle="",character=" "):
         long_data=len(long_element_x)
         long_elements_x[head]=max(long_head,long_data) 
 
-    first_head=next(iter(heads_data))
+    
 
-    long_tabla_y=len(heads_data[first_head])
+    
     long_tabla_x=sum(long_elements_x.values())
     enmarcate=long_tabla_x+2*len(heads_data)+len(heads_data)+1
     title=setTitle.center(enmarcate)
