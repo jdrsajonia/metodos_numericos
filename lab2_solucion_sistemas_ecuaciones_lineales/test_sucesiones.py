@@ -151,12 +151,12 @@ import resolveALU as alu
 
 # TEST PARA REGRESIVAS
 for matrix, independent in zip(up,A):
-    print(su.sustitucionRegresiva(matrix,independent))
+    print(alu.sustitucionRegresiva(matrix,independent))
     #print(matrix)
 
 print()
 # TEST PARA PROGRESIVAS
 for matrix, independent in zip(low,B):
-    print(su.sustitucionProgresiva(matrix,independent))
+    print(alu.sustitucionProgresiva(matrix,independent))
 
 
