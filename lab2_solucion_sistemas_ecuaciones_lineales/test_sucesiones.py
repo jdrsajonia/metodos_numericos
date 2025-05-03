@@ -147,13 +147,16 @@ B = [
     np.array([12, 24, 36, 48, 60, 72, 84, 96, 108, 120])
 ]
 
-import sustituciones as su
+import resolveALU as alu
 
 # TEST PARA REGRESIVAS
 for matrix, independent in zip(up,A):
     print(su.sustitucionRegresiva(matrix,independent))
+    #print(matrix)
 
 print()
 # TEST PARA PROGRESIVAS
 for matrix, independent in zip(low,B):
-    print(su.sustitucionRegresiva(matrix,independent))
+    print(su.sustitucionProgresiva(matrix,independent))
+
+
