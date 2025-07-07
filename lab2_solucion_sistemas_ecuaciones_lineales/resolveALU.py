@@ -97,9 +97,10 @@ def factorizacionLU(matrix):
     if not has_unique_solutions(matrix):
         raise ValueError("La matriz ingresada no es válida (debe tener única solución)")
     
-    U_matrix=matrix.copy()
-    n_dim=U_matrix.shape[0] # dimension filas
-    L_matrix=np.eye(n_dim)
+    
+    U_matrix=matrix.astype(float).copy()
+    n_dim=U_matrix.shape[0]
+    L_matrix=np.eye(n_dim, dtype=float)
     
     for j in range(0,n_dim):
         for i in range(j+1,n_dim):

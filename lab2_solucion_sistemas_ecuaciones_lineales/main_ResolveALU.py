@@ -64,6 +64,8 @@ def ALUmain(matrix=[], independent=[], console_input=False):
         matrix, independent = user_input()
     try:
         init=time.perf_counter()
+        print(matrix)
+        print(independent)
         solucion = alu.resolve_AluMatrix(matrix, independent)
         end=time.perf_counter()
         print("\nSolución del sistema AX = B:")
