@@ -1,5 +1,6 @@
 import sympy as sp
 import RungeKuttaSystem4 as rk
+import getTabla as table
 
 class EDOsuperior:
     '''

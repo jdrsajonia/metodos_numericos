@@ -76,7 +76,7 @@ class RungeKuttaSystem:
         t_k_list=[(self.a + k*self.h) for k in range(self.M_subintervals+1)]
         k_iterations=list(range(len(t_k_list)))
 
-        results={"k":k_iterations, "t_k":t_k_list, "x_k":[], "y_k":[]}
+        results={"k":k_iterations, "t_k":t_k_list, "x_k":[]}
 
         for t_k in t_k_list:
             
@@ -90,7 +90,6 @@ class RungeKuttaSystem:
             y_k1 = y_k + (g_1+2*g_2+2*g_3+g_4)*h/6
 
             results["x_k"].append(x_k)
-            results["y_k"].append(y_k) 
 
             x_k=x_k1
             y_k=y_k1                   #actualiza el valor de x_k, y_k
